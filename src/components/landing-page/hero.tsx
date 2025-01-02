@@ -1,3 +1,5 @@
+import { Button } from "../ui/button";
+
 export function Hero() {
   return (
     <div className="flex border">
@@ -13,7 +15,7 @@ export function Hero() {
         <div className="flex items-center gap-2 w-full -mt-[10vh]">
           <span className="text-white text-xl">projectinbio.com</span>
           <input type="text" />
-          <button>Criar agora</button>
+          <Button variant="primary">Criar agora</Button>
         </div>
       </div>
       <div className="w-full flex items-center justify-center bg-[radial-gradient(circle_at_50%_50%, #4B2DBB, transparent_50%)]">
