@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost";
 }
 
-export function Button({ variant, className, ...props }: ButtonProps) {
+export function Button({ variant = "primary", className, ...props }: ButtonProps) {
   return (
     <button
       className={cn(
