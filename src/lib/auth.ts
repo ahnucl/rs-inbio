@@ -10,4 +10,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
   events: {},
   callbacks: {},
+  secret: process.env.AUTHJS_SECRET_KEY,
 });
