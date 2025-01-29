@@ -1,30 +1,43 @@
-import { cert, getApps, initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import { getStorage } from "firebase-admin/storage";
-import "server-only";
+import { cert, getApps, initializeApp } from 'firebase-admin/app'
+import { getFirestore } from 'firebase-admin/firestore'
+import { getStorage } from 'firebase-admin/storage'
+import 'server-only'
 
 if (!process.env.FIREBASE_PRIVATE_KEY) {
-  throw new Error("Firebase not setup correctly.");
+  throw new Error('Firebase not setup correctly.')
 }
 
 const decodedKey = Buffer.from(
   process.env.FIREBASE_PRIVATE_KEY,
-  "base64"
-).toString("utf-8");
+  'base64'
+).toString('utf-8')
 
 export const firebaseCert = cert({
   projectId: process.env.FIREBASE_PROJECT_ID,
   clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
   privateKey: decodedKey,
-});
+})
 
 if (!getApps().length) {
   initializeApp({
     credential: firebaseCert,
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  });
+  })
 }
 
-export const db = getFirestore();
+export const db = getFirestore()
 
-export const storage = getStorage().bucket();
+export const storage = getStorage().bucket()
+
+export async function getDownloadURLFromPath(path?: string) {
+  if (!path) return
+
+  const file = storage.file(path)
+
+  const [url] = await file.getSignedUrl({
+    action: 'read',
+    expires: '03-01-2500', // Não deixa expirar
+  })
+
+  return url
+}
