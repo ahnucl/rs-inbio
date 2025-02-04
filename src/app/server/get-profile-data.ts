@@ -1,3 +1,4 @@
+import { Link } from '@/actions/add-custom-links'
 import { db } from '@/lib/firebase'
 import 'server-only'
 
@@ -11,6 +12,9 @@ export type ProfileData = {
     linkedin?: string
     twitter?: string
   }
+  link1?: Link
+  link2?: Link
+  link3?: Link
   updatedAt?: Date
 }
 
