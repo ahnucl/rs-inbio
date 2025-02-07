@@ -6,18 +6,23 @@ import { AddCustomLink } from './add-custom-link'
 import { EditSocialLinks } from './edit-social-links'
 import { formatURL } from '@/lib/utils'
 import { EditUserCard } from './edit-user-card'
+import { getDownloadURLFromPath } from '@/lib/firebase'
 
 interface UserCardProps {
-  profileData: ProfileData
+  profileData?: ProfileData
   isOwner?: boolean
 }
 
-export function UserCard({ profileData, isOwner }: UserCardProps) {
+export async function UserCard({ profileData, isOwner }: UserCardProps) {
+  console.log(profileData)
+
   return (
     <div className="w-[348px] flex flex-col items-center gap-5 p-5 border border-white/10 bg-[#121212] rounded-3xl text-white">
       <div className="size-48">
         <img
-          src="https://avatars.githubusercontent.com/u/43029776?v=4"
+          src={
+            (await getDownloadURLFromPath(profileData?.imagePath)) || '/me.webp'
+          }
           alt="User avatar"
           className="w-full h-full object-cover rounded-full"
         />
@@ -25,16 +30,16 @@ export function UserCard({ profileData, isOwner }: UserCardProps) {
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
           <h3 className="text-3xl font-bold min-w-0 overflow-hidden">
-            Nome do usuário
+            {profileData?.name}
           </h3>
-          {isOwner && <EditUserCard />}
+          {isOwner && <EditUserCard profileData={profileData} />}
         </div>
-        <p className="opacity-40">&quot;Descrição do usuário&quot;</p>
+        <p className="opacity-40">{profileData?.description}</p>
       </div>
       <div className="flex flex-col gap-2 w-full">
         <span className="uppercase text-xs font-medium">Links</span>
         <div className="flex gap-3">
-          {profileData.socialMedias?.github && (
+          {profileData?.socialMedias?.github && (
             <Link
               href={profileData.socialMedias.github}
               target="_blank"
@@ -43,7 +48,7 @@ export function UserCard({ profileData, isOwner }: UserCardProps) {
               <Github />
             </Link>
           )}
-          {profileData.socialMedias?.instagram && (
+          {profileData?.socialMedias?.instagram && (
             <Link
               href={profileData.socialMedias.instagram}
               target="_blank"
@@ -52,7 +57,7 @@ export function UserCard({ profileData, isOwner }: UserCardProps) {
               <Instagram />
             </Link>
           )}
-          {profileData.socialMedias?.linkedin && (
+          {profileData?.socialMedias?.linkedin && (
             <Link
               href={profileData.socialMedias.linkedin}
               target="_blank"
@@ -61,7 +66,7 @@ export function UserCard({ profileData, isOwner }: UserCardProps) {
               <Linkedin />
             </Link>
           )}
-          {profileData.socialMedias?.twitter && (
+          {profileData?.socialMedias?.twitter && (
             <Link
               href={profileData.socialMedias.twitter}
               target="_blank"
@@ -71,13 +76,13 @@ export function UserCard({ profileData, isOwner }: UserCardProps) {
             </Link>
           )}
           {isOwner && (
-            <EditSocialLinks socialMedias={profileData.socialMedias} />
+            <EditSocialLinks socialMedias={profileData?.socialMedias} />
           )}
         </div>
       </div>
       <div className="flex flex-col gap-3 w-full min-h-[172px]">
         <div className="w-full flex flex-col items-center gap-3">
-          {profileData.link1?.url && (
+          {profileData?.link1?.url && (
             <Link
               href={formatURL(profileData.link1.url)}
               target="_blank"
@@ -86,7 +91,7 @@ export function UserCard({ profileData, isOwner }: UserCardProps) {
               <Button className="w-full">{profileData.link1.title}</Button>
             </Link>
           )}
-          {profileData.link2?.url && (
+          {profileData?.link2?.url && (
             <Link
               href={formatURL(profileData.link2.url)}
               target="_blank"
@@ -95,7 +100,7 @@ export function UserCard({ profileData, isOwner }: UserCardProps) {
               <Button className="w-full">{profileData.link2.title}</Button>
             </Link>
           )}
-          {profileData.link3?.url && (
+          {profileData?.link3?.url && (
             <Link
               href={formatURL(profileData.link3.url)}
               target="_blank"
