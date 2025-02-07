@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/modal'
 import { TextArea } from '@/components/ui/text-area'
 import { TextInput } from '@/components/ui/text-input'
-import { compressFiles } from '@/lib/utils'
+import { compressFiles, handleImageInput, triggerImageInput } from '@/lib/utils'
 import { ArrowUpFromLine, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
@@ -28,22 +28,11 @@ export function NewProject({ profileId }: NewProjectProps) {
     setIsOpen(true)
   }
 
-  function triggerImageInput(id: string) {
-    document.getElementById(id)?.click()
-  }
-
-  function handleImageInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0] ?? null
-    if (file) {
-      const imageURL = URL.createObjectURL(file)
-      return imageURL
-    }
-    return null
-  }
-
   async function handleSaveProject() {
     setIsCreatingProject(true)
-    const imagesInput = document.getElementById('imageInput') as HTMLInputElement
+    const imagesInput = document.getElementById(
+      'imageInput'
+    ) as HTMLInputElement
     if (!imagesInput.files) return
 
     const compressedFile = await compressFiles(Array.from(imagesInput.files))
@@ -85,14 +74,24 @@ export function NewProject({ profileId }: NewProjectProps) {
             <div className="flex flex-col items-center gap-3 text-xs">
               <div className="w-[100px] h-[100px] rounded-xl bg-background-tertiary overflow-hidden">
                 {projectImage ? (
-                  <img src={projectImage} alt="" className="object-cover object-center" />
+                  <img
+                    src={projectImage}
+                    alt=""
+                    className="object-cover object-center"
+                  />
                 ) : (
-                  <button onClick={() => triggerImageInput('imageInput')} className="w-full h-full">
+                  <button
+                    onClick={() => triggerImageInput('imageInput')}
+                    className="w-full h-full"
+                  >
                     100x100
                   </button>
                 )}
               </div>
-              <button className="text-white flex items-center gap-2" onClick={() => triggerImageInput('imageInput')}>
+              <button
+                className="text-white flex items-center gap-2"
+                onClick={() => triggerImageInput('imageInput')}
+              >
                 <ArrowUpFromLine className="size-4" />
                 <span>Adicionar imagem</span>
               </button>
@@ -118,7 +117,10 @@ export function NewProject({ profileId }: NewProjectProps) {
               </div>
 
               <div className="flelx flex-col gap-1">
-                <label htmlFor="project-description" className="text-white font-bold">
+                <label
+                  htmlFor="project-description"
+                  className="text-white font-bold"
+                >
                   Descrição
                 </label>
                 <TextArea
@@ -144,7 +146,10 @@ export function NewProject({ profileId }: NewProjectProps) {
             </div>
           </div>
           <div className="flex gap-4 justify-end">
-            <button onClick={() => setIsOpen(false)} className="font-bold text-white">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="font-bold text-white"
+            >
               Voltar
             </button>
             <Button onClick={handleSaveProject} disabled={isCreatingProject}>
