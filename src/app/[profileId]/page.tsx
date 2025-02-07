@@ -21,8 +21,6 @@ export default async function ProfilePage({
 
   const projects = await getProfileProjects(profileId)
 
-  console.log('PROJECTS =>', projects)
-
   const session = await auth()
 
   const isOwner = profileData.userId === session?.user?.id
