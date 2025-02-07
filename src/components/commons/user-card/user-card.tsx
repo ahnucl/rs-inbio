@@ -5,12 +5,14 @@ import { Button } from '../../ui/button'
 import { AddCustomLink } from './add-custom-link'
 import { EditSocialLinks } from './edit-social-links'
 import { formatURL } from '@/lib/utils'
+import { EditUserCard } from './edit-user-card'
 
 interface UserCardProps {
   profileData: ProfileData
+  isOwner?: boolean
 }
 
-export function UserCard({ profileData }: UserCardProps) {
+export function UserCard({ profileData, isOwner }: UserCardProps) {
   return (
     <div className="w-[348px] flex flex-col items-center gap-5 p-5 border border-white/10 bg-[#121212] rounded-3xl text-white">
       <div className="size-48">
@@ -25,6 +27,7 @@ export function UserCard({ profileData }: UserCardProps) {
           <h3 className="text-3xl font-bold min-w-0 overflow-hidden">
             Nome do usuário
           </h3>
+          {isOwner && <EditUserCard />}
         </div>
         <p className="opacity-40">&quot;Descrição do usuário&quot;</p>
       </div>
@@ -67,11 +70,12 @@ export function UserCard({ profileData }: UserCardProps) {
               <Twitter />
             </Link>
           )}
-
-          <EditSocialLinks socialMedias={profileData.socialMedias} />
+          {isOwner && (
+            <EditSocialLinks socialMedias={profileData.socialMedias} />
+          )}
         </div>
       </div>
-      <div className="flex flex-col gap-3 w-full h-[172px]">
+      <div className="flex flex-col gap-3 w-full min-h-[172px]">
         <div className="w-full flex flex-col items-center gap-3">
           {profileData.link1?.url && (
             <Link
@@ -100,9 +104,9 @@ export function UserCard({ profileData }: UserCardProps) {
               <Button className="w-full">{profileData.link3.title}</Button>
             </Link>
           )}
+          {isOwner && <AddCustomLink />}
         </div>
       </div>
-      <AddCustomLink />
     </div>
   )
 }
