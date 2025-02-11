@@ -14,8 +14,6 @@ interface UserCardProps {
 }
 
 export async function UserCard({ profileData, isOwner }: UserCardProps) {
-  console.log(profileData)
-
   return (
     <div className="w-[348px] flex flex-col items-center gap-5 p-5 border border-white/10 bg-[#121212] rounded-3xl text-white">
       <div className="size-48">

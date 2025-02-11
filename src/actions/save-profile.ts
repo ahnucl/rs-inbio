@@ -45,8 +45,6 @@ export async function saveProfile(formData: FormData) {
       imagePath = storageRef.name
     }
 
-    console.log(hasFile, imagePath, file)
-
     await db
       .collection('profiles')
       .doc(profileId)
