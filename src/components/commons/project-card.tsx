@@ -1,8 +1,10 @@
 'use client'
 
+import { increaseProjectVisits } from '@/actions/increase-project-visits'
 import { ProjectData } from '@/app/server/get-profile-data'
 import { formatURL } from '@/lib/utils'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 interface ProjectCardProps {
   project: ProjectData
@@ -11,11 +13,16 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, isOwner, img }: ProjectCardProps) {
+  const { profileId } = useParams()
+
   const projectURL = project.projectURL
   const formattedURL = formatURL(projectURL)
 
-  function handleClick() {
-    console.log('clicked') // TODO: Implementar analytics
+  async function handleClick() {
+    console.log(profileId, project.id)
+
+    if (!profileId || !project.id || isOwner) return
+    await increaseProjectVisits(profileId as string, project.id)
   }
 
   return (
