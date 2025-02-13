@@ -7,21 +7,27 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
 interface ProjectCardProps {
-  project: ProjectData
-  isOwner: boolean
+  project?: ProjectData
+  isOwner?: boolean
   img?: string
+  name?: string
+  description?: string
 }
 
-export function ProjectCard({ project, isOwner, img }: ProjectCardProps) {
+export function ProjectCard({
+  project,
+  isOwner,
+  img,
+  name,
+  description,
+}: ProjectCardProps) {
   const { profileId } = useParams()
 
-  const projectURL = project.projectURL
+  const projectURL = project?.projectURL || ''
   const formattedURL = formatURL(projectURL)
 
   async function handleClick() {
-    console.log(profileId, project.id)
-
-    if (!profileId || !project.id || isOwner) return
+    if (!profileId || !project?.id || isOwner) return
     await increaseProjectVisits(profileId as string, project.id)
   }
 
@@ -34,15 +40,15 @@ export function ProjectCard({ project, isOwner, img }: ProjectCardProps) {
         <div className="flex flex-col gap-2">
           {isOwner && (
             <span className=" uppercase text-xs font-bold text-accent-green">
-              {project.totalVisits || 0} Cliques
+              {project?.totalVisits || 0} Cliques
             </span>
           )}
           <div className="flex flex-col">
             <span className="text-white font-bold text-xl">
-              {project.projectName}
+              {name || project?.projectName}
             </span>
             <span className="text-content-body text-sm">
-              {project.projectDescription}
+              {description || project?.projectDescription}
             </span>
           </div>
         </div>

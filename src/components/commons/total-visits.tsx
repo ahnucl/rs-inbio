@@ -1,7 +1,7 @@
 import { TrendingUp } from 'lucide-react'
 
 interface TotalVisitsProps {
-  totalVisits: number
+  totalVisits?: number
 }
 
 export function TotalVisits({ totalVisits = 0 }: TotalVisitsProps) {

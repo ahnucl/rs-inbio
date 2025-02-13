@@ -1,5 +1,5 @@
 import { ProfileData } from '@/app/server/get-profile-data'
-import { Github, Instagram, Linkedin, Twitter } from 'lucide-react'
+import { Github, Instagram, Linkedin, Plus, Twitter } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '../../ui/button'
 import { AddCustomLink } from './add-custom-link'
@@ -14,6 +14,8 @@ interface UserCardProps {
 }
 
 export async function UserCard({ profileData, isOwner }: UserCardProps) {
+  const icons = [Github, Instagram, Linkedin, Twitter, Plus]
+
   return (
     <div className="w-[348px] flex flex-col items-center gap-5 p-5 border border-white/10 bg-[#121212] rounded-3xl text-white">
       <div className="size-48">
@@ -21,7 +23,7 @@ export async function UserCard({ profileData, isOwner }: UserCardProps) {
           src={
             (await getDownloadURLFromPath(profileData?.imagePath)) || '/me.webp'
           }
-          alt="User avatar"
+          alt="Profile image"
           className="w-full h-full object-cover rounded-full"
         />
       </div>
@@ -73,6 +75,16 @@ export async function UserCard({ profileData, isOwner }: UserCardProps) {
               <Twitter />
             </Link>
           )}
+          {!profileData &&
+            icons.map((Icon, index) => (
+              <button
+                key={index}
+                className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]"
+              >
+                <Icon />
+              </button>
+            ))}
+
           {isOwner && (
             <EditSocialLinks socialMedias={profileData?.socialMedias} />
           )}
@@ -106,6 +118,11 @@ export async function UserCard({ profileData, isOwner }: UserCardProps) {
             >
               <Button className="w-full">{profileData.link3.title}</Button>
             </Link>
+          )}
+          {!profileData && (
+            <button className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
+              <Plus />
+            </button>
           )}
           {isOwner && <AddCustomLink />}
         </div>
