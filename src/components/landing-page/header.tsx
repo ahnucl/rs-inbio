@@ -1,11 +1,15 @@
 import { auth } from '@/lib/auth'
 import { Button } from '../ui/button'
 import { manageAuth } from '@/actions/manage-auth'
+import Link from 'next/link'
+import { getProfileId } from '@/app/server/get-profile-data'
 
 export async function Header() {
   const session = await auth()
 
   // console.log(session);
+
+  const profileId = await getProfileId(session?.user.id as string)
 
   return (
     <div className="absolute top-0 left-0 right-0 max-w-7xl 2xl:max-w-[110rem] mx-auto flex items-center justify-between py-10">
@@ -14,7 +18,11 @@ export async function Header() {
         <h3 className="text-white text-2xl font-bold">ProjectInBio</h3>
       </div>
       <div className="flex items-center gap-4">
-        {session && <Button>Minha página</Button>}
+        {session && (
+          <Link href={`/${profileId}`}>
+            <Button>Minha página</Button>
+          </Link>
+        )}
         <form action={manageAuth}>
           <Button>{session ? 'Sair' : 'Login'}</Button>
         </form>
